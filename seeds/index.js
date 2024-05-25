@@ -1,15 +1,15 @@
-const mongoose = require("mongoose");
-const cities = require("./cities");
-const { places, descriptors } = require("./seedHelpers");
-const Campground = require("../models/campground");
+import { connect, connection } from "mongoose";
+import cities from "./cities";
+import { places, descriptors } from "./seedHelpers";
+import Campground, { deleteMany } from "../models/campground";
 
-mongoose.connect("mongodb://localhost:27017/camp-db", {
+connect("mongodb://localhost:27017/camp-db", {
   useNewUrlParser: true,
 //   useCreateIndex: true,
   useUnifiedTopology: true
 });
 
-const db = mongoose.connection;
+const db = connection;
 
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -19,7 +19,7 @@ db.once("open", () => {
 const sample = array => array[Math.floor(Math.random() * array.length)];
 
 const seedDB = async () => {
-    await Campground.deleteMany({});
+    await deleteMany({});
     for(let i = 0; i < 50; i++){
         const random1000 = Math.floor(Math.random() * 1000);
         const price = Math.floor(Math.random() * 20) +10;
@@ -35,5 +35,5 @@ const seedDB = async () => {
 }
 
 seedDB().then(() => {
-    mongoose.connection.close();
+    connection.close();
 });
