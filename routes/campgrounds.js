@@ -4,6 +4,7 @@ import catchAsyncError from "../utilities/catchAsyncError.js";
 import ExpressError from "../utilities/ExpressError.js";
 import Campground from "../models/campground.js";
 import { campgroundSchema} from "../validationSchemas.js";
+import { isLoggedIn } from "../middleware.js";
 
 const validateCampground = (req, res, next) => {
   const { error } = campgroundSchema.validate(req.body);
@@ -23,12 +24,12 @@ router.get(
   })
 );
 
-router.get("/new", (req, res) => {
+router.get("/new", isLoggedIn, (req, res) => {
   res.render("campgrounds/new");
 });
 
 router.post(
-  "/",
+  "/", isLoggedIn,
   validateCampground,
   catchAsyncError(async (req, res, next) => {
     // if (!req.body.campground)
