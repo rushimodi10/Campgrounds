@@ -1,4 +1,4 @@
-import { Schema as _Schema, model } from 'mongoose';
+import { Schema as _Schema } from 'mongoose';
 const Schema = _Schema;
 import mongoose from 'mongoose';
 
@@ -8,6 +8,10 @@ const CampgroundSchema = new Schema({
     price: Number,
     description: String,
     location: String,
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
     reviews: [
         {
             type: Schema.Types.ObjectId,

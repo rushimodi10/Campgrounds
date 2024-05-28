@@ -1,7 +1,9 @@
-import { connect, connection } from "mongoose";
-import cities from "./cities";
-import { places, descriptors } from "./seedHelpers";
-import Campground, { deleteMany } from "../models/campground";
+import mongoose from "mongoose";
+import cities from "./cities.js";
+import { places, descriptors } from "./seedHelpers.js";
+import Campground from "../models/campground.js";
+
+const { connect, connection } = mongoose;
 
 connect("mongodb://localhost:27017/camp-db", {
   useNewUrlParser: true,
@@ -19,11 +21,12 @@ db.once("open", () => {
 const sample = array => array[Math.floor(Math.random() * array.length)];
 
 const seedDB = async () => {
-    await deleteMany({});
+    await Campground.deleteMany({});
     for(let i = 0; i < 50; i++){
         const random1000 = Math.floor(Math.random() * 1000);
         const price = Math.floor(Math.random() * 20) +10;
         const camp = new Campground({
+          author: '6654218a45661008d3be9fec',
           location: `${cities[random1000].city}, ${cities[random1000].state}`,
           title: `${sample(descriptors)} ${sample(places)}`,
           image: "https://source.unsplash.com/collection/483251",
